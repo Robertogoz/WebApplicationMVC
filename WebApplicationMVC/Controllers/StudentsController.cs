@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplicationMVC.Data;
+using WebApplicationMVC.Extensions;
 using WebApplicationMVC.Models;
 
 namespace WebApplicationMVC.Controllers
@@ -21,17 +22,32 @@ namespace WebApplicationMVC.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string searchString,
+            string currentFilter,
+            int? pageNumber)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentSort"] = sortOrder;
+
+            if(searchString != null)
+            {
+                pageNumber = 1;
+            } else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
 
             var students = from s in _context.Students
                            select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.LastName.Contains(searchString) || s.FirstMidName.Contains(searchString));
+                students = students.Where(s => s.LastName.Contains(searchString) 
+                                       || s.FirstMidName.Contains(searchString));
             }
             switch (sortOrder)
             {
@@ -48,7 +64,8 @@ namespace WebApplicationMVC.Controllers
                     students = students.OrderBy(s => s.LastName);
                     break;
             }
-            return View(await students.AsNoTracking().ToListAsync());
+            int pageSize = 5;
+            return View(await PaginatedList<Student>.CreateAsync(students.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Students/Details/5
