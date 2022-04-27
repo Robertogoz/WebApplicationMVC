@@ -2,7 +2,7 @@
 
 namespace WebApplicationMVC.Data
 {
-    public static class DbInitializer
+    public static class DbInitialize
     {
         public static void Initialize(AppDataContext context)
         {
