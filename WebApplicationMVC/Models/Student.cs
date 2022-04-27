@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplicationMVC.Models {
     public class Student
@@ -9,6 +10,7 @@ namespace WebApplicationMVC.Models {
         public string LastName { get; set; }
 
         [StringLength(50)]
+        [Column("FirstName")]
         public string FirstMidName { get; set; }
 
         [DataType(DataType.Date)]
