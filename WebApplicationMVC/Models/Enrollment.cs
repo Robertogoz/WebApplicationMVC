@@ -1,4 +1,6 @@
-﻿namespace WebApplicationMVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApplicationMVC.Models
 {
     public enum Grade
     {
@@ -10,6 +12,8 @@
         public int ID { get; set; }
         public int CourseID { get; set; }
         public int StudentID { get; set; }
+        
+        [DisplayFormat(NullDisplayText = "No Grade")]
         public Grade? Grade { get; set; }
 
         public Course Course { get; set; }
