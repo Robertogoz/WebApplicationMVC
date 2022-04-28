@@ -32,7 +32,7 @@ namespace WebApplicationMVC.Models
             }
         }
 
-        public ICollection<CourseAssignment> CourseAssignment { get; set; }
+        public ICollection<CourseAssignment>? CourseAssignment { get; set; }
         public OfficeAssignment OfficeAssignment { get; set; }
     }
 }
