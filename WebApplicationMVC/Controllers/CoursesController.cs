@@ -39,6 +39,7 @@ namespace WebApplicationMVC.Controllers
 
             var course = await _context.Courses
                 .Include(c => c.Department)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (course == null)
             {
@@ -141,6 +142,7 @@ namespace WebApplicationMVC.Controllers
 
             var course = await _context.Courses
                 .Include(c => c.Department)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (course == null)
             {
