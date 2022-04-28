@@ -23,8 +23,10 @@ namespace WebApplicationMVC.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var appDataContext = _context.Courses.Include(c => c.Department);
-            return View(await appDataContext.ToListAsync());
+            var courses = _context.Courses
+                .Include(c => c.Department)
+                .AsNoTracking();
+            return View(await courses.ToListAsync());
         }
 
         // GET: Courses/Details/5
