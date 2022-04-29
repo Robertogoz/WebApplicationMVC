@@ -33,6 +33,6 @@ namespace WebApplicationMVC.Models
         }
 
         public ICollection<CourseAssignment>? CourseAssignment { get; set; }
-        public OfficeAssignment OfficeAssignment { get; set; }
+        public OfficeAssignment? OfficeAssignment { get; set; }
     }
 }
