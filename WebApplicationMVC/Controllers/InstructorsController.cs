@@ -235,10 +235,19 @@ namespace WebApplicationMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instructor = await _context.Instructors.FindAsync(id);
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.CourseAssignment)
+                .SingleAsync(i => i.ID == id);
+
+            var department = await _context.Departments
+                .Where(d => d.InstructorID == id)
+                .ToListAsync();
+            department.ForEach(d => d.InstructorID = null);
+
             _context.Instructors.Remove(instructor);
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         private bool InstructorExists(int id)
