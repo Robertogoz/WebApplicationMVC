@@ -139,7 +139,7 @@ namespace WebApplicationMVC.Controllers
         // POST: Instructors/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, string[] selectedCourse)
+        public async Task<IActionResult> Edit(int? id, string[] selectedCourses)
         {
             if (id == null)
             {
@@ -150,7 +150,7 @@ namespace WebApplicationMVC.Controllers
                 .Include(i => i.OfficeAssignment)
                 .Include(i => i.CourseAssignment)
                     .ThenInclude(i => i.Course)
-                .FirstOrDefaultAsync(s => s.ID == id);
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (await TryUpdateModelAsync<Instructor>(
                 instructorToUpdate,
@@ -161,7 +161,7 @@ namespace WebApplicationMVC.Controllers
                 {
                     instructorToUpdate.OfficeAssignment = null;
                 }
-                UpdateInstructorCourses(selectedCourse, instructorToUpdate);
+                UpdateInstructorCourses(selectedCourses, instructorToUpdate);
                 try
                 {
                     await _context.SaveChangesAsync();
@@ -175,7 +175,7 @@ namespace WebApplicationMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            UpdateInstructorCourses(selectedCourse, instructorToUpdate);
+            UpdateInstructorCourses(selectedCourses, instructorToUpdate);
             PopulateAssignedCourseData(instructorToUpdate);
             return View(instructorToUpdate);
         }
